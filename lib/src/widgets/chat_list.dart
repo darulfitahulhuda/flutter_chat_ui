@@ -266,7 +266,7 @@ class _ChatListState extends State<ChatList>
         // Compare items to fire only on newly added messages.
         if (oldMessage != message) {
           // Run only for sent message.
-          if (message.author.id == InheritedUser.of(context).user.id) {
+          if (message.author?.id == InheritedUser.of(context).user.id) {
             // Delay to give some time for Flutter to calculate new
             // size after new message was added
             Future.delayed(const Duration(milliseconds: 100), () {

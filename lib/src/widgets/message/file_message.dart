@@ -20,7 +20,7 @@ class FileMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = InheritedUser.of(context).user;
-    final color = user.id == message.author.id
+    final color = user.id == message.author?.id
         ? InheritedChatTheme.of(context).theme.sentMessageDocumentIconColor
         : InheritedChatTheme.of(context).theme.receivedMessageDocumentIconColor;
 
@@ -73,7 +73,7 @@ class FileMessage extends StatelessWidget {
                   children: [
                     Text(
                       message.name,
-                      style: user.id == message.author.id
+                      style: user.id == message.author?.id
                           ? InheritedChatTheme.of(context)
                               .theme
                               .sentMessageBodyTextStyle
@@ -88,7 +88,7 @@ class FileMessage extends StatelessWidget {
                       ),
                       child: Text(
                         formatBytes(message.size.truncate()),
-                        style: user.id == message.author.id
+                        style: user.id == message.author?.id
                             ? InheritedChatTheme.of(context)
                                 .theme
                                 .sentMessageCaptionTextStyle

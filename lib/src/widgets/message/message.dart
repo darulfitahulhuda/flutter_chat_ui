@@ -169,7 +169,7 @@ class Message extends StatelessWidget {
   Widget build(BuildContext context) {
     final query = MediaQuery.of(context);
     final user = InheritedUser.of(context).user;
-    final currentUserIsAuthor = user.id == message.author.id;
+    final currentUserIsAuthor = user.id == message.author?.id;
     final enlargeEmojis =
         emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
             message is types.TextMessage &&
@@ -284,9 +284,9 @@ class Message extends StatelessWidget {
   }
 
   Widget _avatarBuilder() => showAvatar
-      ? avatarBuilder?.call(message.author.id) ??
+      ? avatarBuilder?.call(message.author?.id ?? '') ??
           UserAvatar(
-            author: message.author,
+            author: message.author!,
             bubbleRtlAlignment: bubbleRtlAlignment,
             onAvatarTap: onAvatarTap,
           )
