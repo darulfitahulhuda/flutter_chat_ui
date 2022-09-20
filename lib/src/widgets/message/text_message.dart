@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-// import 'package:flutter_link_previewer/flutter_link_previewer.dart'
-// show LinkPreview, regexEmail, regexLink;
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import '../../link_preview/link_preview.dart' show LinkPreview;
+import '../../link_preview/utils_link_preview.dart' show regexEmail, regexLink;
 import '../../models/emoji_enlargement_behavior.dart';
 import '../../models/pattern_style.dart';
 import '../../util.dart';
@@ -68,16 +67,16 @@ class TextMessage extends StatelessWidget {
             isConsistsOfEmojis(emojiEnlargementBehavior, message);
     final theme = InheritedChatTheme.of(context).theme;
     final user = InheritedUser.of(context).user;
-    // final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
 
-    // if (usePreviewData && onPreviewDataFetched != null) {
-    //   final urlRegexp = RegExp(regexLink, caseSensitive: false);
-    //   final matches = urlRegexp.allMatches(message.text);
+    if (usePreviewData && onPreviewDataFetched != null) {
+      final urlRegexp = RegExp(regexLink, caseSensitive: false);
+      final matches = urlRegexp.allMatches(message.text);
 
-    //   if (matches.isNotEmpty) {
-    //     return _linkPreview(user, width, context);
-    //   }
-    // }
+      if (matches.isNotEmpty) {
+        return _linkPreview(user, width, context);
+      }
+    }
 
     return Container(
       margin: EdgeInsets.symmetric(
@@ -88,50 +87,50 @@ class TextMessage extends StatelessWidget {
     );
   }
 
-  // Widget _linkPreview(
-  //   types.User user,
-  //   double width,
-  //   BuildContext context,
-  // ) {
-  //   final linkDescriptionTextStyle = user.id == message.author?.id
-  //       ? InheritedChatTheme.of(context)
-  //           .theme
-  //           .sentMessageLinkDescriptionTextStyle
-  //       : InheritedChatTheme.of(context)
-  //           .theme
-  //           .receivedMessageLinkDescriptionTextStyle;
-  //   final linkTitleTextStyle = user.id == message.author?.id
-  //       ? InheritedChatTheme.of(context).theme.sentMessageLinkTitleTextStyle
-  //       : InheritedChatTheme.of(context)
-  //           .theme
-  //           .receivedMessageLinkTitleTextStyle;
+  Widget _linkPreview(
+    types.User user,
+    double width,
+    BuildContext context,
+  ) {
+    final linkDescriptionTextStyle = user.id == message.author?.id
+        ? InheritedChatTheme.of(context)
+            .theme
+            .sentMessageLinkDescriptionTextStyle
+        : InheritedChatTheme.of(context)
+            .theme
+            .receivedMessageLinkDescriptionTextStyle;
+    final linkTitleTextStyle = user.id == message.author?.id
+        ? InheritedChatTheme.of(context).theme.sentMessageLinkTitleTextStyle
+        : InheritedChatTheme.of(context)
+            .theme
+            .receivedMessageLinkTitleTextStyle;
 
-  //   return LinkPreview(
-  //     enableAnimation: true,
-  //     metadataTextStyle: linkDescriptionTextStyle,
-  //     metadataTitleStyle: linkTitleTextStyle,
-  //     onLinkPressed: options.onLinkPressed,
-  //     onPreviewDataFetched: _onPreviewDataFetched,
-  //     openOnPreviewImageTap: options.openOnPreviewImageTap,
-  //     openOnPreviewTitleTap: options.openOnPreviewTitleTap,
-  //     padding: EdgeInsets.symmetric(
-  //       horizontal:
-  //           InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
-  //       vertical: InheritedChatTheme.of(context).theme.messageInsetsVertical,
-  //     ),
-  //     previewData: message.previewData,
-  //     text: message.text,
-  //     textWidget: _textWidgetBuilder(user, context, false),
-  //     userAgent: userAgent,
-  //     width: width,
-  //   );
-  // }
+    return LinkPreview(
+      enableAnimation: true,
+      metadataTextStyle: linkDescriptionTextStyle,
+      metadataTitleStyle: linkTitleTextStyle,
+      onLinkPressed: options.onLinkPressed,
+      onPreviewDataFetched: _onPreviewDataFetched,
+      openOnPreviewImageTap: options.openOnPreviewImageTap,
+      openOnPreviewTitleTap: options.openOnPreviewTitleTap,
+      padding: EdgeInsets.symmetric(
+        horizontal:
+            InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
+        vertical: InheritedChatTheme.of(context).theme.messageInsetsVertical,
+      ),
+      previewData: message.previewData,
+      text: message.text,
+      textWidget: _textWidgetBuilder(user, context, false),
+      userAgent: userAgent,
+      width: width,
+    );
+  }
 
-  // void _onPreviewDataFetched(types.PreviewData previewData) {
-  //   if (message.previewData == null) {
-  //     onPreviewDataFetched?.call(message, previewData);
-  //   }
-  // }
+  void _onPreviewDataFetched(types.PreviewData previewData) {
+    if (message.previewData == null) {
+      onPreviewDataFetched?.call(message, previewData);
+    }
+  }
 
   Widget _textWidgetBuilder(
     types.User user,
@@ -176,8 +175,7 @@ class TextMessage extends StatelessWidget {
                     await launchUrl(url);
                   }
                 },
-                // ignore: format-comment
-                // pattern: regexEmail,
+                pattern: regexEmail,
                 style: bodyLinkTextStyle ??
                     bodyTextStyle.copyWith(
                       decoration: TextDecoration.underline,
@@ -204,8 +202,7 @@ class TextMessage extends StatelessWidget {
                     }
                   }
                 },
-                // ignore: format-comment
-                // pattern: regexLink,
+                pattern: regexLink,
                 style: bodyLinkTextStyle ??
                     bodyTextStyle.copyWith(
                       decoration: TextDecoration.underline,
