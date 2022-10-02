@@ -165,8 +165,19 @@ class _InputState extends State<Input> {
           borderRadius: InheritedChatTheme.of(context).theme.inputBorderRadius,
           color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
           child: Container(
-            decoration:
-                InheritedChatTheme.of(context).theme.inputContainerDecoration,
+            // decoration:
+            //     InheritedChatTheme.of(context).theme.inputContainerDecoration,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 10,
+                  blurRadius: 5,
+                  offset: const Offset(0, 7),
+                ),
+              ],
+            ),
             padding: safeAreaInsets,
             child: Row(
               textDirection: TextDirection.ltr,
@@ -189,6 +200,14 @@ class _InputState extends State<Input> {
                           .theme
                           .inputTextDecoration
                           .copyWith(
+                            border: InputBorder.none,
+
+                            isCollapsed: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+
                             hintStyle: InheritedChatTheme.of(context)
                                 .theme
                                 .inputTextStyle
@@ -198,8 +217,9 @@ class _InputState extends State<Input> {
                                       .inputTextColor
                                       .withOpacity(0.5),
                                 ),
-                            hintText:
-                                InheritedL10n.of(context).l10n.inputPlaceholder,
+                            hintText: 'Kirim Pesan',
+                            // hintText:
+                            //     InheritedL10n.of(context).l10n.inputPlaceholder,
                           ),
                       focusNode: _inputFocusNode,
                       keyboardType: TextInputType.multiline,
