@@ -29,7 +29,7 @@ dependencies:
   flutter_chat_types:
     git:
       url: https://github.com/darulfitahulhuda/flutter_chat_types.git
-      ref: main
+      ref: 1c59c16
 
   # flutter_link_previewer:
   #   git:
