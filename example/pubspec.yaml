@@ -33,7 +33,11 @@ dependencies:
   file_picker: ^4.6.1
   flutter:
     sdk: flutter
-  flutter_chat_types: ^3.4.4
+  # flutter_chat_types: ^3.4.4
+  flutter_chat_types:
+    git:
+      url: https://github.com/darulfitahulhuda/flutter_chat_types.git
+      ref: cdb5c3f
   flutter_chat_ui:
     path: ../
   http: ^0.13.5

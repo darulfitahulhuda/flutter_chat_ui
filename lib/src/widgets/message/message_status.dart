@@ -39,7 +39,16 @@ class MessageStatus extends StatelessWidget {
             ? InheritedChatTheme.of(context).theme.seenIcon!
             : Image.asset(
                 'assets/icon-seen.png',
-                color: InheritedChatTheme.of(context).theme.primaryColor,
+                // color: InheritedChatTheme.of(context).theme.primaryColor,
+                color: const Color(0xff707070),
+                package: 'flutter_chat_ui',
+              );
+      case types.Status.read:
+        return InheritedChatTheme.of(context).theme.seenIcon != null
+            ? InheritedChatTheme.of(context).theme.seenIcon!
+            : Image.asset(
+                'assets/icon-seen.png',
+                color: const Color(0xff6D29F6),
                 package: 'flutter_chat_ui',
               );
       case types.Status.sending:
