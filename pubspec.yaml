@@ -15,21 +15,23 @@ dependencies:
   equatable: ^2.0.3
   flutter:
     sdk: flutter
+  flutter_chat_types:
+    git:
+      url: https://github.com/darulfitahulhuda/flutter_chat_types.git
+      ref: e8a4ee7
+  flutter_linkify: ^5.0.2
   flutter_parsed_text: ^2.2.1
+  html: ^0.15.0
+  http: ^0.13.4
   intl: ^0.17.0
+  linkify: ^4.1.0
   meta: ^1.7.0
   photo_view: ^0.14.0
   scroll_to_index: ^3.0.1
   url_launcher: ^6.1.5
   visibility_detector: ^0.3.3
-  linkify: ^4.1.0
-  html: ^0.15.0
-  http: ^0.13.4
-  flutter_linkify: ^5.0.2
-  flutter_chat_types:
-    git:
-      url: https://github.com/darulfitahulhuda/flutter_chat_types.git
-      ref: d6e3abd
+  
+  
 
   # flutter_link_previewer:
   #   git:
