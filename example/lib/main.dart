@@ -41,6 +41,14 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+
+    // for (var i = 0; i < 30; i++) {
+    //   _messages.add(types.TextMessage(
+    //     author: _user,
+    //     id: i.toString(),
+    //     text: i.toString(),
+    //   ));
+    // }
     _loadMessages();
   }
 
@@ -48,6 +56,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) => Scaffold(
         body: Chat(
           messages: _messages,
+          // messages: const [],
           onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,
           onPreviewDataFetched: _handlePreviewDataFetched,
@@ -55,6 +64,9 @@ class _ChatPageState extends State<ChatPage> {
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
+          warningChat:
+              'Sebelum Anda mulai berkomunikasi, ingatlah untuk berhati-hati saat berinteraksi dengan orang yang belum Anda kenal. Harap diingat, jangan pernah mentransfer dana atau memberikan informasi keuangan pribadi Anda kepada siapapun. Jika Anda merasa ada tindakan yang mencurigakan, jangan ragu untuk segera melaporkannya kepada kami. Kami sangat peduli dengan keamanan Anda. Untuk informasi lebih lanjut atau bantuan, silakan hubungi pusat bantuan kami.',
+          warningStyle: const TextStyle(fontSize: 10),
         ),
       );
 

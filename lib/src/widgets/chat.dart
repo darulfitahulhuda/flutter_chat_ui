@@ -86,6 +86,10 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
+    this.warningChat,
+    this.warningStyle,
+    this.alertWidget,
+    this.sliverAppBar,
   });
 
   /// See [Message.avatarBuilder].
@@ -288,6 +292,13 @@ class Chat extends StatefulWidget {
   /// See [Message.userAgent].
   final String? userAgent;
 
+  final Widget? alertWidget;
+
+  final String? warningChat;
+  final TextStyle? warningStyle;
+
+  final SliverAppBar? sliverAppBar;
+
   @override
   State<Chat> createState() => ChatState();
 }
@@ -396,8 +407,10 @@ class ChatState extends State<Chat> {
                                         _messageBuilder(
                                       item,
                                       constraints,
-                                      index,
+                                      index ?? -1,
+                                      _chatMessages,
                                     ),
+                                    sliverAppBar: widget.sliverAppBar,
                                     items: _chatMessages,
                                     keyboardDismissBehavior:
                                         widget.keyboardDismissBehavior,
@@ -435,16 +448,11 @@ class ChatState extends State<Chat> {
 
   Widget _emptyStateBuilder() =>
       widget.emptyState ??
-      Container(
-        alignment: Alignment.center,
-        margin: const EdgeInsets.symmetric(
-          horizontal: 24,
-        ),
-        child: Text(
-          widget.l10n.emptyChatPlaceholder,
-          style: widget.theme.emptyChatPlaceholderTextStyle,
-          textAlign: TextAlign.center,
-        ),
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          widget.alertWidget ?? const SizedBox(),
+        ],
       );
 
   /// Only scroll to first unread if there are messages and it is the first open.
@@ -466,33 +474,94 @@ class ChatState extends State<Chat> {
   Widget _messageBuilder(
     Object object,
     BoxConstraints constraints,
-    int? index,
+    int index,
+    List<Object> items,
   ) {
+    final showInfo = (items.length - 1) == index || index == 100;
     if (object is DateHeader) {
       if (widget.dateHeaderBuilder != null) {
         return widget.dateHeaderBuilder!(object);
       } else {
-        return Container(
-          alignment: Alignment.center,
-          margin: widget.theme.dateDividerMargin,
-          child: Text(
-            object.text,
-            style: widget.theme.dateDividerTextStyle,
-          ),
+        return Column(
+          children: [
+            if (widget.warningChat != null && showInfo)
+              widget.alertWidget ?? const SizedBox(),
+            // Container(
+            //   margin:
+            //       const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            //   padding:
+            //       const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            //   decoration: BoxDecoration(
+            //     color: const Color(0xffF2F3F8),
+            //     borderRadius: BorderRadius.circular(8),
+            //   ),
+            //   child: Text(
+            //     widget.warningChat!,
+            //     textAlign: TextAlign.center,
+            //     style: widget.warningStyle,
+            //   ),
+            // ),
+            Container(
+              alignment: Alignment.center,
+              margin: widget.theme.dateDividerMargin,
+              child: Text(
+                object.text,
+                style: widget.theme.dateDividerTextStyle,
+              ),
+            ),
+          ],
         );
       }
     } else if (object is MessageSpacer) {
-      return SizedBox(
-        height: object.height,
+      return Column(
+        children: [
+          if (widget.warningChat != null && showInfo)
+            widget.alertWidget ?? const SizedBox(),
+          // Container(
+          //   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          //   decoration: BoxDecoration(
+          //     color: const Color(0xffF2F3F8),
+          //     borderRadius: BorderRadius.circular(8),
+          //   ),
+          //   child: Text(
+          //     widget.warningChat!,
+          //     textAlign: TextAlign.justify,
+          //     style: widget.warningStyle,
+          //   ),
+          // ),
+          SizedBox(
+            height: object.height,
+          ),
+        ],
       );
     } else if (object is UnreadHeaderData) {
-      return AutoScrollTag(
-        controller: _scrollController,
-        index: index ?? -1,
-        key: const Key('unread_header'),
-        child: UnreadHeader(
-          marginTop: object.marginTop,
-        ),
+      return Column(
+        children: [
+          if (widget.warningChat != null && showInfo)
+            widget.alertWidget ?? const SizedBox(),
+          // Container(
+          //   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          //   decoration: BoxDecoration(
+          //     color: const Color(0xffF2F3F8),
+          //     borderRadius: BorderRadius.circular(8),
+          //   ),
+          //   child: Text(
+          //     widget.warningChat!,
+          //     textAlign: TextAlign.justify,
+          //     style: widget.warningStyle,
+          //   ),
+          // ),
+          AutoScrollTag(
+            controller: _scrollController,
+            index: index,
+            key: const Key('unread_header'),
+            child: UnreadHeader(
+              marginTop: object.marginTop,
+            ),
+          ),
+        ],
       );
     } else {
       final map = object as Map<String, Object>;
@@ -502,49 +571,69 @@ class ChatState extends State<Chat> {
               ? min(constraints.maxWidth * 0.72, 440).floor()
               : min(constraints.maxWidth * 0.78, 440).floor();
 
-      return AutoScrollTag(
-        controller: _scrollController,
-        index: index ?? -1,
-        key: Key('scroll-${message.id}'),
-        child: Message(
-          avatarBuilder: widget.avatarBuilder,
-          bubbleBuilder: widget.bubbleBuilder,
-          bubbleRtlAlignment: widget.bubbleRtlAlignment,
-          customMessageBuilder: widget.customMessageBuilder,
-          customStatusBuilder: widget.customStatusBuilder,
-          emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
-          fileMessageBuilder: widget.fileMessageBuilder,
-          hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
-          imageMessageBuilder: widget.imageMessageBuilder,
-          isTextMessageTextSelectable: widget.isTextMessageTextSelectable,
-          message: message,
-          messageWidth: messageWidth,
-          nameBuilder: widget.nameBuilder,
-          onAvatarTap: widget.onAvatarTap,
-          onMessageDoubleTap: widget.onMessageDoubleTap,
-          onMessageLongPress: widget.onMessageLongPress,
-          onMessageStatusLongPress: widget.onMessageStatusLongPress,
-          onMessageStatusTap: widget.onMessageStatusTap,
-          onMessageTap: (context, tappedMessage) {
-            if (tappedMessage is types.ImageMessage &&
-                widget.disableImageGallery != true) {
-              _onImagePressed(tappedMessage);
-            }
+      return Column(
+        children: [
+          if (widget.warningChat != null && showInfo)
+            widget.alertWidget ?? const SizedBox(),
+          // Container(
+          //   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          //   decoration: BoxDecoration(
+          //     color: const Color(0xffF2F3F8),
+          //     borderRadius: BorderRadius.circular(8),
+          //   ),
+          //   child: Text(
+          //     widget.warningChat!,
+          //     textAlign: TextAlign.justify,
+          //     style: widget.warningStyle,
+          //   ),
+          // ),
+          AutoScrollTag(
+            controller: _scrollController,
+            index: index,
+            key: Key('scroll-${message.id}'),
+            child: Message(
+              avatarBuilder: widget.avatarBuilder,
+              bubbleBuilder: widget.bubbleBuilder,
+              bubbleRtlAlignment: widget.bubbleRtlAlignment,
+              customMessageBuilder: widget.customMessageBuilder,
+              customStatusBuilder: widget.customStatusBuilder,
+              emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
+              fileMessageBuilder: widget.fileMessageBuilder,
+              hideBackgroundOnEmojiMessages:
+                  widget.hideBackgroundOnEmojiMessages,
+              imageMessageBuilder: widget.imageMessageBuilder,
+              isTextMessageTextSelectable: widget.isTextMessageTextSelectable,
+              message: message,
+              messageWidth: messageWidth,
+              nameBuilder: widget.nameBuilder,
+              onAvatarTap: widget.onAvatarTap,
+              onMessageDoubleTap: widget.onMessageDoubleTap,
+              onMessageLongPress: widget.onMessageLongPress,
+              onMessageStatusLongPress: widget.onMessageStatusLongPress,
+              onMessageStatusTap: widget.onMessageStatusTap,
+              onMessageTap: (context, tappedMessage) {
+                if (tappedMessage is types.ImageMessage &&
+                    widget.disableImageGallery != true) {
+                  _onImagePressed(tappedMessage);
+                }
 
-            widget.onMessageTap?.call(context, tappedMessage);
-          },
-          onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
-          onPreviewDataFetched: _onPreviewDataFetched,
-          roundBorder: map['nextMessageInGroup'] == true,
-          showAvatar: map['nextMessageInGroup'] == false,
-          showName: map['showName'] == true,
-          showStatus: map['showStatus'] == true,
-          showUserAvatars: widget.showUserAvatars,
-          textMessageBuilder: widget.textMessageBuilder,
-          textMessageOptions: widget.textMessageOptions,
-          usePreviewData: widget.usePreviewData,
-          userAgent: widget.userAgent,
-        ),
+                widget.onMessageTap?.call(context, tappedMessage);
+              },
+              onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
+              onPreviewDataFetched: _onPreviewDataFetched,
+              roundBorder: map['nextMessageInGroup'] == true,
+              showAvatar: map['nextMessageInGroup'] == false,
+              showName: map['showName'] == true,
+              showStatus: map['showStatus'] == true,
+              showUserAvatars: widget.showUserAvatars,
+              textMessageBuilder: widget.textMessageBuilder,
+              textMessageOptions: widget.textMessageOptions,
+              usePreviewData: widget.usePreviewData,
+              userAgent: widget.userAgent,
+            ),
+          ),
+        ],
       );
     }
   }
