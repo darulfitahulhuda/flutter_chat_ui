@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -66,6 +67,27 @@ class _ChatPageState extends State<ChatPage> {
           warningChat:
               'Sebelum Anda mulai berkomunikasi, ingatlah untuk berhati-hati saat berinteraksi dengan orang yang belum Anda kenal. Harap diingat, jangan pernah mentransfer dana atau memberikan informasi keuangan pribadi Anda kepada siapapun. Jika Anda merasa ada tindakan yang mencurigakan, jangan ragu untuk segera melaporkannya kepada kami. Kami sangat peduli dengan keamanan Anda. Untuk informasi lebih lanjut atau bantuan, silakan hubungi pusat bantuan kami.',
           warningStyle: const TextStyle(fontSize: 10),
+          alertWidget: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xffF2F3F8),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Text.rich(
+              TextSpan(
+                text: 'chat_alert_1',
+                style: TextStyle(fontSize: 10),
+                children: [
+                  TextSpan(
+                    text: 'chat_alert_2',
+                    style: TextStyle(fontSize: 10, color: Colors.green),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
       );
 

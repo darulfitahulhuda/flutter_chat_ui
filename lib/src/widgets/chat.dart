@@ -478,6 +478,22 @@ class ChatState extends State<Chat> {
     List<Object> items,
   ) {
     final showInfo = (items.length - 1) == index || index == 100;
+
+    if (index % 17 == 0 && widget.warningChat != null && index != 0) {
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: const Color(0xffF2F3F8),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          widget.warningChat!,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 10),
+        ),
+      );
+    }
     if (object is DateHeader) {
       if (widget.dateHeaderBuilder != null) {
         return widget.dateHeaderBuilder!(object);
