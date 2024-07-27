@@ -477,9 +477,11 @@ class ChatState extends State<Chat> {
     int index,
     List<Object> items,
   ) {
+    final warningIndex = items.length - index;
+
     final showInfo = (items.length - 1) == index || index == 100;
 
-    // if (index % 17 == 0 && widget.warningChat != null && index != 0) {
+    // if (warningIndex % 17 == 0 && widget.warningChat != null && ) {
     //   return Container(
     //     margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     //     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -502,7 +504,7 @@ class ChatState extends State<Chat> {
           children: [
             if (widget.warningChat != null && showInfo)
               widget.alertWidget ?? const SizedBox(),
-            if (index % 17 == 0 && widget.warningChat != null && index != 0)
+            if (warningIndex % 14 == 0 && widget.warningChat != null)
               _textWarningWidget(),
             // Container(
             //   margin:
@@ -536,7 +538,7 @@ class ChatState extends State<Chat> {
           if (widget.warningChat != null && showInfo)
             widget.alertWidget ?? const SizedBox(),
 
-          if (index % 17 == 0 && widget.warningChat != null && index != 0)
+          if (warningIndex % 14 == 0 && widget.warningChat != null)
             _textWarningWidget(),
           // Container(
           //   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -562,7 +564,7 @@ class ChatState extends State<Chat> {
           if (widget.warningChat != null && showInfo)
             widget.alertWidget ?? const SizedBox(),
 
-          if (index % 17 == 0 && widget.warningChat != null && index != 0)
+          if (warningIndex % 14 == 0 && widget.warningChat != null)
             _textWarningWidget(),
           // Container(
           //   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -600,7 +602,7 @@ class ChatState extends State<Chat> {
           if (widget.warningChat != null && showInfo)
             widget.alertWidget ?? const SizedBox(),
 
-          if (index % 17 == 0 && widget.warningChat != null && index != 0)
+          if (warningIndex % 14 == 0 && widget.warningChat != null)
             _textWarningWidget(),
           // Container(
           //   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
