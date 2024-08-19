@@ -42,6 +42,11 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
 
+    types.ImageMessage(
+      channelId:232,
+      
+    );
+
     // for (var i = 0; i < 30; i++) {
     //   _messages.add(types.TextMessage(
     //     author: _user,

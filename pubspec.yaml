@@ -18,7 +18,7 @@ dependencies:
   flutter_chat_types:
     git:
       url: https://github.com/darulfitahulhuda/flutter_chat_types.git
-      ref: 8b6b9f6c161150968321f64c856af87b21667940
+      ref: be2eda509e8ea15d1243bcc05a4a33df91d12ebb
   flutter_linkify: ^6.0.0
   flutter_parsed_text: ^2.2.1
   html: ^0.15.0
