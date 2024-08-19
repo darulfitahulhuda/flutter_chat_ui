@@ -90,6 +90,7 @@ class Chat extends StatefulWidget {
     this.warningStyle,
     this.alertWidget,
     this.sliverAppBar,
+    this.warningWidget,
   });
 
   /// See [Message.avatarBuilder].
@@ -296,6 +297,8 @@ class Chat extends StatefulWidget {
 
   final String? warningChat;
   final TextStyle? warningStyle;
+
+  final Widget? Function(int index)? warningWidget;
 
   final SliverAppBar? sliverAppBar;
 
@@ -505,7 +508,8 @@ class ChatState extends State<Chat> {
             if (widget.warningChat != null && showInfo)
               widget.alertWidget ?? const SizedBox(),
             if (warningIndex % 14 == 0 && widget.warningChat != null)
-              _textWarningWidget(),
+              widget.warningWidget?.call(warningIndex) ?? _textWarningWidget(),
+            // _textWarningWidget(),
             // Container(
             //   margin:
             //       const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -539,7 +543,7 @@ class ChatState extends State<Chat> {
             widget.alertWidget ?? const SizedBox(),
 
           if (warningIndex % 14 == 0 && widget.warningChat != null)
-            _textWarningWidget(),
+            widget.warningWidget?.call(warningIndex) ?? _textWarningWidget(),
           // Container(
           //   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -565,7 +569,7 @@ class ChatState extends State<Chat> {
             widget.alertWidget ?? const SizedBox(),
 
           if (warningIndex % 14 == 0 && widget.warningChat != null)
-            _textWarningWidget(),
+            widget.warningWidget?.call(warningIndex) ?? _textWarningWidget(),
           // Container(
           //   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -603,7 +607,7 @@ class ChatState extends State<Chat> {
             widget.alertWidget ?? const SizedBox(),
 
           if (warningIndex % 14 == 0 && widget.warningChat != null)
-            _textWarningWidget(),
+            widget.warningWidget?.call(warningIndex) ?? _textWarningWidget(),
           // Container(
           //   margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           //   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
